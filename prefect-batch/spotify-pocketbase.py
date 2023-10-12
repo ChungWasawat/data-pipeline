@@ -103,7 +103,10 @@ def check_for_duplicates(client: PocketBase, artist: str) -> bool:
 def write_to_pocketbase(client: PocketBase, artist_list: list):
     # write artist list to pocketbase
     print("writing to PocketBase..")
-    for artist in artist_list:
+    max_length = len(artist_list)
+    for index, artist in enumerate(artist_list):
+        if ((index / max_length) *100) % 10 == 0:
+            print(f"successfully wrote data at {index/max_length*100}%")
         if check_for_duplicates(client, artist["spotify_id"]):
             try:
                 client.collection('artists').create(artist)
